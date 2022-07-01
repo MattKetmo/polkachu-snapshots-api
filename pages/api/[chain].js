@@ -2,8 +2,19 @@ const cheerio = require('cheerio')
 
 export default async function handler(req, res) {
   const { chain } = req.query
+  const url = "https://polkachu.com/tendermint_snapshots/" + chain
+  const response = await fetch(url)
 
-  const response = await fetch("https://polkachu.com/tendermint_snapshots/" + chain)
+  if (!response.ok) {
+    res.status(response.status)
+    res.json({
+      error: "Unable to fetch origin",
+      origin: url,
+      status: response.status,
+    })
+    return
+  }
+
   const html = await response.text()
   const $ = cheerio.load(html)
 
