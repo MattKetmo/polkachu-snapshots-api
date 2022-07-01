@@ -1,1 +1,1 @@
-# polkachu-snapshots-api
+# Polkachu Snapshots API
