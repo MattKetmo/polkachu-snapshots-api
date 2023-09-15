@@ -1,8 +1,14 @@
 const cheerio = require('cheerio')
 
 export default async function handler(req, res) {
-  const { chain } = req.query
-  const url = "https://polkachu.com/tendermint_snapshots/" + chain
+  const { query } = req
+  const { chain,  testnet = '0' } = query
+
+  let url = `https://polkachu.com/tendermint_snapshots/${chain}`
+  if (testnet === '1') {
+    url = `https://polkachu.com/testnets/${chain}/snapshots`
+  }
+
   const response = await fetch(url)
 
   if (!response.ok) {
