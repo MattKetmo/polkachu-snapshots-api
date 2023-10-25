@@ -1,12 +1,6 @@
 import express, { Request, Response, NextFunction } from "express"
 import { XMLParser } from "fast-xml-parser"
 
-const routes = express.Router()
-
-routes.get("/", async (req: Request, res: Response, next: NextFunction) => {
-  return res.status(200).json({})
-})
-
 function getBaseUrl(network: string): string {
   return network === "testnet" ?
     "https://snapshots.polkachu.com/testnet-snapshots/" :
@@ -45,12 +39,18 @@ async function getSnapshot(network: string, chain?: string): Promise<any> {
   }).filter((item: any) => chain ? item?.chain === chain : item !== null)
 }
 
-routes.get("/:network", async (req: Request, res: Response, next: NextFunction) => {
+const routes = express.Router()
+
+routes.get("/api", async (req: Request, res: Response, next: NextFunction) => {
+  return res.status(200).json({})
+})
+
+routes.get("/api/:network", async (req: Request, res: Response, next: NextFunction) => {
   const { network } = req.params
   return res.status(200).json(await getSnapshot(network))
 })
 
-routes.get("/:network/:chain", async (req: Request, res: Response, next: NextFunction) => {
+routes.get("/api/:network/:chain", async (req: Request, res: Response, next: NextFunction) => {
   const { network, chain } = req.params
   return res.status(200).json(await getSnapshot(network, chain))
 })
