@@ -2,7 +2,7 @@
 import http from "http"
 import express, { Express } from "express"
 import morgan from "morgan"
-import api from "./api"
+import api from "../api"
 
 const router: Express = express()
 
