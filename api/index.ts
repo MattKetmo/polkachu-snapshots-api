@@ -23,7 +23,7 @@ async function getSnapshot(network: string, chain?: string): Promise<any> {
     const matches = key.match(keyRegex)
 
     const chain = matches?.length > 1 ? matches[1] : ""
-    const height = matches?.length > 2 ? matches[2] : ""
+    const height = matches?.length > 2 ? parseInt(matches[2]) : 0
     const date = new Date(item.LastModified)
 
     if (!height) {
@@ -36,7 +36,11 @@ async function getSnapshot(network: string, chain?: string): Promise<any> {
       url: baseUrl + item.Key,
       timestamp: Math.round(date.getTime() / 1000),
     }
-  }).filter((item: any) => chain ? item?.chain === chain : item !== null)
+  }).filter(
+    (item: any) => chain ? item?.chain === chain : item !== null
+  ).sort(
+    (a: any, b: any) => a.chain === b.chain ? b.height - a.height : a.chain.localeCompare(b.chain)
+  )
 }
 
 const routes = express.Router()
