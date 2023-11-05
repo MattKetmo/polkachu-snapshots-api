@@ -34,6 +34,7 @@ async function getSnapshot(network: string, chain?: string): Promise<any> {
       chain,
       height,
       url: baseUrl + item.Key,
+      date: date.toISOString(),
       timestamp: Math.round(date.getTime() / 1000),
     }
   }).filter(
